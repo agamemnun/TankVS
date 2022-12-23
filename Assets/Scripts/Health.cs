@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public int maxHealth = 3;
+    public int maxHealth = 100;
     public int currentHealth;
     // Start is called before the first frame update
     void Start()
@@ -21,9 +21,10 @@ public class Health : MonoBehaviour
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
-        Debug.Log(currentHealth);
+        Debug.Log($"current health: {@currentHealth}");
         if (currentHealth <= 0)
         {
+            Debug.Log("You have won!");
             // dead
             // dead animation
             // show gameover screen
