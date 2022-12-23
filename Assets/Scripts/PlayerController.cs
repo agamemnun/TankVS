@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject spawnLocation;
 
-  
+
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
     void chargeFire()
     {
         firePower += Time.deltaTime * chargeMultiplier;
-        
+
     }
 
     GameObject spawnBullet()
@@ -71,7 +71,5 @@ public class PlayerController : MonoBehaviour
         bulletRb.AddForce(turret.transform.up * firePower, ForceMode2D.Impulse);
         firePower = 0;
     }
-
- 
 
 }
