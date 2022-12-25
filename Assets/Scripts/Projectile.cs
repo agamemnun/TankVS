@@ -49,6 +49,7 @@ public class Projectile : MonoBehaviour
 
         foreach (Collider2D col in objectsInRange)
         {
+            Debug.Log(col.tag);
             if (col.tag == "Player")
             {
                 var healthComponent = col.GetComponent<Health>();
