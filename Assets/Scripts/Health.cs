@@ -6,13 +6,13 @@ public class Health : MonoBehaviour
 {
     public int maxHealth = 100;
     public int currentHealth;
-    // Start is called before the first frame update
+    public HealthBarBehaviour healthBar;
     void Start()
     {
         currentHealth = maxHealth;
+        healthBar.setHealth(currentHealth, maxHealth);
     }
 
-    // Update is called once per frame
     void Update()
     {
 
@@ -21,10 +21,12 @@ public class Health : MonoBehaviour
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
+        healthBar.setHealth(currentHealth, maxHealth);
         Debug.Log($"current health: {@currentHealth}");
         if (currentHealth <= 0)
         {
             Debug.Log("You have won!");
+            Destroy(gameObject);
             // dead
             // dead animation
             // show gameover screen
