@@ -38,13 +38,19 @@ public class Projectile : MonoBehaviour
 
     }
 
+    public bool getPlayerLuck()
+    {
+        // TODO ileride playerdan alırız
+        return Random.Range(0, 10) < 3;
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
-        AreaDamageEnemies(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y), explosionRadius, damage);
+        areaDamageEnemies(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y), explosionRadius, damage);
         Destroy(gameObject);
     }
 
-    void AreaDamageEnemies(Vector2 center, float radius, float damage)
+    void areaDamageEnemies(Vector2 center, float radius, float damage)
     {
         Collider2D[] objectsInRange = Physics2D.OverlapCircleAll(center, radius);
 
@@ -60,17 +66,17 @@ public class Projectile : MonoBehaviour
                     float effect = 1 - (proximity / radius);
                     bool isCriticalHit = false;
 
-                    if (effect > 0.7f)
+                    damage = baseDamage;
+
+                    if (effect >= 0.8f)
                     {
-                        isCriticalHit = Random.Range(0, 10) < 3;
-                        damage = criticalDamage;
-                    }
-                    else
-                    {
-                        damage = baseDamage;
+                        isCriticalHit = getPlayerLuck();
+
+                        if (isCriticalHit)
+                            damage = criticalDamage;
                     }
 
-                    healthComponent.TakeDamage((int)(damage * effect), isCriticalHit);
+                    healthComponent.takeDamage((int)(damage * effect), isCriticalHit);
                 }
             }
 

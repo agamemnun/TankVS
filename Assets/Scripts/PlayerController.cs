@@ -8,10 +8,13 @@ public class PlayerController : MonoBehaviour
     public float turretRotationSpeed = 30.0f;
     public float bulletVelocity = 300.0f;
     public float firePower = 0.0f;
+    public float maxFirePower = 15.0f;
     float chargeMultiplier = 10.0f;
     [SerializeField] GameObject turret;
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject spawnLocation;
+    private bool chargingStarted = false;
+    private bool isCharging = false;
 
 
 
@@ -24,20 +27,18 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (Input.GetKey(KeyCode.UpArrow))
-        {
             rotateTurretUp();
-        }
         else if (Input.GetKey(KeyCode.DownArrow))
-        {
             rotateTurretDown();
-        }
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
+            chargingStarted = true;
+
+        if (chargingStarted && Input.GetKey(KeyCode.Space))
             chargeFire();
 
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (isCharging && Input.GetKeyUp(KeyCode.Space))
             fire();
-
     }
 
     void rotateTurretUp()
@@ -54,8 +55,12 @@ public class PlayerController : MonoBehaviour
 
     void chargeFire()
     {
+        isCharging = true;
+
         firePower += Time.deltaTime * chargeMultiplier;
 
+        if (firePower >= maxFirePower)
+            fire();
     }
 
     GameObject spawnBullet()
@@ -65,6 +70,8 @@ public class PlayerController : MonoBehaviour
 
     void fire()
     {
+        chargingStarted = false;
+        isCharging = false;
         GameObject bulletInstance = spawnBullet();
         Rigidbody2D bulletRb = bulletInstance.GetComponent<Rigidbody2D>();
         bulletRb.gravityScale = 1;

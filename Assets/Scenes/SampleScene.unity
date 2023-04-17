@@ -287,7 +287,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 395321615}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.817, y: 1.001, z: 0}
+  m_LocalPosition: {x: 3.09, y: 1.001, z: 0}
   m_LocalScale: {x: 0.279779, y: 0.4059453, z: 0.51405656}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -434,7 +434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.24, y: -0.98, z: -10}
+  m_LocalPosition: {x: 0.62, y: 1.3, z: -10}
   m_LocalScale: {x: 3.75, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1193,7 +1193,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1553707750}
   m_LocalRotation: {x: -0.004869399, y: 0.033083815, z: 0.14553347, w: 0.988788}
-  m_LocalPosition: {x: -3.17, y: 1.57, z: 0.0081}
+  m_LocalPosition: {x: 1.6, y: 1.19, z: -0.29}
   m_LocalScale: {x: 0.279779, y: 0.24602745, z: 0.51405656}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1216,6 +1216,7 @@ MonoBehaviour:
   turretRotationSpeed: 30
   bulletVelocity: 300
   firePower: 0
+  maxFirePower: 15
   turret: {fileID: 1711675255}
   bullet: {fileID: 2780567275924284289, guid: 171dc268b6379cb44b7663d8663b7c5d, type: 3}
   spawnLocation: {fileID: 10135820}

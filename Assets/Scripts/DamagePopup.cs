@@ -9,15 +9,16 @@ public class DamagePopup : MonoBehaviour
     public static DamagePopup Create(Vector3 position, int damageAmount, bool isCriticalHit)
     {
         Transform damagePopupTransform = Instantiate(GameAssets.i.pfDamagePopup, position, Quaternion.identity);
-        //Debug.Log(position);
-        Debug.Log(position);
         DamagePopup damagePopup = damagePopupTransform.GetComponent<DamagePopup>();
         damagePopup.Setup(damageAmount, isCriticalHit);
 
         return damagePopup;
     }
+
     private static int sortingOrder;
+
     private const float DISAPPEAR_TIMER_MAX = 1f;
+
     private TextMeshPro textMesh;
     private float disappearTimer;
     private Color textColor;
@@ -36,13 +37,13 @@ public class DamagePopup : MonoBehaviour
 
         if (!isCriticalHit)
         {
-            textMesh.fontSize = 8;
+            textMesh.fontSize = 2;
             textColor = regularHitTextColor;
         }
         else
         {
             // Critical hit
-            textMesh.fontSize = 12;
+            textMesh.fontSize = 4;
             textColor = CriticalHitTextColor;
         }
         textMesh.color = textColor;
@@ -51,13 +52,13 @@ public class DamagePopup : MonoBehaviour
         sortingOrder++;
         textMesh.sortingOrder = sortingOrder;
 
-        moveVector = new Vector3(.7f, 1) * 60f;
+        moveVector = new Vector3(0, .2f, 1f) * 60f;
     }
 
     private void Update()
     {
         transform.position += moveVector * Time.deltaTime;
-        moveVector -= moveVector * 8f * Time.deltaTime;
+        moveVector -= moveVector * 12f * Time.deltaTime;
 
         if (disappearTimer > DISAPPEAR_TIMER_MAX * .5f)
         {
@@ -68,9 +69,10 @@ public class DamagePopup : MonoBehaviour
         else
         {
             // Second half of the popup
-            float deccreaseScaleAmount = 1f;
-            transform.localScale -= Vector3.one * deccreaseScaleAmount * Time.deltaTime;
+            float decreaseScaleAmount = 1f;
+            transform.localScale -= Vector3.one * decreaseScaleAmount * Time.deltaTime;
         }
+
         disappearTimer -= Time.deltaTime;
         if (disappearTimer < 0)
         {

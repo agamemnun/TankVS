@@ -18,11 +18,12 @@ public class Health : MonoBehaviour
 
     }
 
-    public void TakeDamage(int damageAmount, bool isCriticalHit)
+    public void takeDamage(int damageAmount, bool isCriticalHit)
     {
         currentHealth -= damageAmount;
         healthBar.setHealth(currentHealth, maxHealth);
-        DamagePopup.Create(transform.position, damageAmount, isCriticalHit);
+
+        DamagePopup.Create(gameObject.transform.position, damageAmount, isCriticalHit);
 
         Debug.Log($"current health: {@currentHealth}");
         if (currentHealth <= 0)
