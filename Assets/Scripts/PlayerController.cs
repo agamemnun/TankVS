@@ -30,29 +30,19 @@ public class PlayerController : MonoBehaviour
         powerIndicatorStartPos = fireLocation.transform.position;
         powerIndicatorEndPos = spawnLocation.transform.position;
 
-        if (lr == null)
-            lr = gameObject.AddComponent<LineRenderer>();
-
-        lr.material = new Material(Shader.Find("Sprites/Default"));
-
-        // A simple 2 color gradient with a fixed alpha of 1.0f.
-        float alpha = 1.0f;
-        Gradient gradient = new Gradient();
-        gradient.SetKeys(
-            new GradientColorKey[] { new GradientColorKey(Color.yellow, 0.0f), new GradientColorKey(Color.red, 1.0f) },
-            new GradientAlphaKey[] { new GradientAlphaKey(alpha, 0.0f), new GradientAlphaKey(alpha, 1.0f) }
-        );
-        lr.colorGradient = gradient;
+        initializePowerIndicator();
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetKey(KeyCode.UpArrow))
-            rotateTurretUp();
-        else if (Input.GetKey(KeyCode.DownArrow))
-            rotateTurretDown();
+        if (!isCharging)
+        {
+            if (Input.GetKey(KeyCode.UpArrow))
+                rotateTurretUp();
+            else if (Input.GetKey(KeyCode.DownArrow))
+                rotateTurretDown();
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -86,24 +76,7 @@ public class PlayerController : MonoBehaviour
 
         firePower += Time.deltaTime * chargeMultiplier;
 
-        lr.enabled = true;
-        lr.positionCount = 2;
-        lr.widthCurve = powerIndicatorAC;
-        lr.numCapVertices = 10;
-
-        lr.SetPosition(0, fireLocation.transform.position);
-        lr.useWorldSpace = true;
-
-
-        powerIndicatorEndPos += (turretDir * 0.02f);
-
-        Debug.Log($"start pos: {fireLocation.transform.position}");
-        Debug.Log($"end pos: {powerIndicatorEndPos}");
-        //powerIndicatorEndPos.x *= 2f;
-        // powerIndicatorEndPos.y *= 2f;
-
-        lr.SetPosition(1, powerIndicatorEndPos);
-
+        showFirePowerIndicator();
 
         if (firePower >= MAX_FIRE_POWER)
             fire();
@@ -124,6 +97,47 @@ public class PlayerController : MonoBehaviour
         bulletRb.gravityScale = 1;
         bulletRb.AddForce(turret.transform.up * firePower, ForceMode2D.Impulse);
         firePower = 0;
+
+        hideFirePowerIndicator();
+    }
+
+    void initializePowerIndicator()
+    {
+        if (lr == null)
+            lr = gameObject.AddComponent<LineRenderer>();
+
+        lr.material = new Material(Shader.Find("Sprites/Default"));
+
+        // A simple 2 color gradient with a fixed alpha of 1.0f.
+        float alpha = 1.0f;
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(
+            new GradientColorKey[] { new GradientColorKey(Color.yellow, 0.0f), new GradientColorKey(Color.red, 1.0f) },
+            new GradientAlphaKey[] { new GradientAlphaKey(alpha, 0.0f), new GradientAlphaKey(alpha, 1.0f) }
+        );
+        lr.colorGradient = gradient;
+    }
+
+    void showFirePowerIndicator()
+    {
+        lr.enabled = true;
+        lr.positionCount = 2;
+        lr.widthCurve = powerIndicatorAC;
+        lr.numCapVertices = 10;
+
+        lr.SetPosition(0, fireLocation.transform.position);
+        lr.useWorldSpace = true;
+
+        powerIndicatorEndPos += (turretDir * 0.02f);
+
+        //Debug.Log($"start pos: {fireLocation.transform.position}");
+        Debug.Log($"end pos: {powerIndicatorEndPos}");
+
+        lr.SetPosition(1, powerIndicatorEndPos);
+    }
+
+    void hideFirePowerIndicator()
+    {
         lr.enabled = false;
     }
 
