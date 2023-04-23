@@ -6,13 +6,11 @@ public class Projectile : MonoBehaviour
 {
     public int baseDamage = 10;
     public int criticalDamage = 20;
-    public int damage;
     public float baseExplosionRadius = 2.0f;
     public float explosionRadius;
     // Start is called before the first frame update
     void Start()
     {
-        damage = baseDamage;
         explosionRadius = baseExplosionRadius;
     }
 
@@ -46,11 +44,11 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        areaDamageEnemies(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y), explosionRadius, damage);
+        InflictAreaDamage(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y), explosionRadius);
         Destroy(gameObject);
     }
 
-    void areaDamageEnemies(Vector2 center, float radius, float damage)
+    void InflictAreaDamage(Vector2 center, float radius)
     {
         Collider2D[] objectsInRange = Physics2D.OverlapCircleAll(center, radius);
 
@@ -66,7 +64,7 @@ public class Projectile : MonoBehaviour
                     float effect = 1 - (proximity / radius);
                     bool isCriticalHit = false;
 
-                    damage = baseDamage;
+                    int damage = baseDamage;
 
                     if (effect >= 0.8f)
                     {
@@ -76,7 +74,12 @@ public class Projectile : MonoBehaviour
                             damage = criticalDamage;
                     }
 
-                    healthComponent.takeDamage((int)(damage * effect), isCriticalHit);
+                    int damageInflicted = (int)(damage * effect);
+
+                    if (damageInflicted <= 0)
+                        continue;
+
+                    healthComponent.takeDamage(damageInflicted, isCriticalHit);
                 }
             }
 

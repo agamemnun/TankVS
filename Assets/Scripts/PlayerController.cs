@@ -6,19 +6,60 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float turretRotationSpeed = 30.0f;
+    private float turretRotation = -50f;
+    [SerializeField] int turretRotationUpAngleLimit = -100;
+    [SerializeField] int turretRotationDownAngleLimit = -10;
+
     public float bulletVelocity = 300.0f;
     public float firePower = 0.0f;
     float chargeMultiplier = 10.0f;
     private const float MAX_FIRE_POWER = 15.0f;
+    private bool isAlive = false;
     [SerializeField] GameObject turret;
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject spawnLocation;
     [SerializeField] GameObject fireLocation;
+    [SerializeField] bool isPlayerTurn = false;
     private bool chargingStarted = false;
     private bool isCharging = false;
 
+
     private Vector3 powerIndicatorStartPos;
     private Vector3 powerIndicatorEndPos;
+
+
+
+    public void StartTurn()
+    {
+        Debug.Log($"{gameObject.name}'s turn started");
+        isPlayerTurn = true;
+    }
+
+    public void EndTurn()
+    {
+        if (IsAlive())
+        {
+            if (isCharging)
+            {
+                Fire();
+            }
+
+        }
+
+        Debug.Log($"{gameObject.name}'s turn ended");
+        isPlayerTurn = false;
+    }
+
+    public void RevivePlayer()
+    {
+        isAlive = true;
+    }
+
+    public bool IsAlive()
+    {
+        return isAlive;
+    }
+
     private LineRenderer lr;
     private Vector3 turretDir;
     [SerializeField] AnimationCurve powerIndicatorAC;
@@ -30,19 +71,15 @@ public class PlayerController : MonoBehaviour
         powerIndicatorStartPos = fireLocation.transform.position;
         powerIndicatorEndPos = spawnLocation.transform.position;
 
-        initializePowerIndicator();
+        InitializePowerIndicator();
+        RotateTurret();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isCharging)
-        {
-            if (Input.GetKey(KeyCode.UpArrow))
-                rotateTurretUp();
-            else if (Input.GetKey(KeyCode.DownArrow))
-                rotateTurretDown();
-        }
+        if (!isPlayerTurn)
+            return;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -52,56 +89,85 @@ public class PlayerController : MonoBehaviour
         }
 
         if (chargingStarted && Input.GetKey(KeyCode.Space))
-            chargeFire();
+            ChargeFire();
 
         if (isCharging && Input.GetKeyUp(KeyCode.Space))
-            fire();
+            Fire();
+
     }
 
-    void rotateTurretUp()
+    private void FixedUpdate()
     {
-        if (turret.transform.rotation.z < 0 && turret.transform.rotation.z > -0.84f)
-            turret.transform.Rotate(0, 0, turretRotationSpeed * Time.deltaTime);
+        if (!isPlayerTurn)
+            return;
+
+        if (!isCharging)
+        {
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                RotateTurret(1);
+            }
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                RotateTurret(-1);
+            }
+        }
     }
 
-    void rotateTurretDown()
+    void RotateTurret(int direction = 1)
     {
-        if (turret.transform.rotation.z < 0.10f && turret.transform.rotation.z > -0.82f)
-            turret.transform.Rotate(0, 0, -turretRotationSpeed * Time.deltaTime);
+        turretRotation = turretRotation + (turretRotationSpeed * Time.deltaTime * direction);
+
+        turretRotation = Mathf.Clamp(turretRotation, turretRotationUpAngleLimit, turretRotationDownAngleLimit);
+
+        var rot = turret.transform.localEulerAngles;
+        rot.z = turretRotation;
+
+        turret.transform.localEulerAngles = rot;
     }
 
-    void chargeFire()
+
+    void ChargeFire()
     {
         isCharging = true;
 
         firePower += Time.deltaTime * chargeMultiplier;
 
-        showFirePowerIndicator();
+        ShowFirePowerIndicator();
 
         if (firePower >= MAX_FIRE_POWER)
-            fire();
+            Fire();
     }
 
-    GameObject spawnBullet()
+    GameObject SpawnBullet()
     {
         return Instantiate(bullet, spawnLocation.transform.position, bullet.transform.rotation);
     }
 
-    void fire()
+    void Fire()
     {
         chargingStarted = false;
         isCharging = false;
 
-        GameObject bulletInstance = spawnBullet();
+        GameObject bulletInstance = SpawnBullet();
         Rigidbody2D bulletRb = bulletInstance.GetComponent<Rigidbody2D>();
+
         bulletRb.gravityScale = 1;
         bulletRb.AddForce(turret.transform.up * firePower, ForceMode2D.Impulse);
         firePower = 0;
 
-        hideFirePowerIndicator();
+        HideFirePowerIndicator();
     }
 
-    void initializePowerIndicator()
+    void CancelFire()
+    {
+        chargingStarted = false;
+        isCharging = false;
+
+        HideFirePowerIndicator();
+    }
+
+    void InitializePowerIndicator()
     {
         if (lr == null)
             lr = gameObject.AddComponent<LineRenderer>();
@@ -118,7 +184,7 @@ public class PlayerController : MonoBehaviour
         lr.colorGradient = gradient;
     }
 
-    void showFirePowerIndicator()
+    void ShowFirePowerIndicator()
     {
         lr.enabled = true;
         lr.positionCount = 2;
@@ -131,12 +197,12 @@ public class PlayerController : MonoBehaviour
         powerIndicatorEndPos += (turretDir * 0.02f);
 
         //Debug.Log($"start pos: {fireLocation.transform.position}");
-        Debug.Log($"end pos: {powerIndicatorEndPos}");
+        //Debug.Log($"end pos: {powerIndicatorEndPos}");
 
         lr.SetPosition(1, powerIndicatorEndPos);
     }
 
-    void hideFirePowerIndicator()
+    void HideFirePowerIndicator()
     {
         lr.enabled = false;
     }

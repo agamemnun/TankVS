@@ -28,7 +28,6 @@ public class Health : MonoBehaviour
         Debug.Log($"current health: {@currentHealth}");
         if (currentHealth <= 0)
         {
-            Debug.Log("You have won!");
             Destroy(gameObject);
             // dead
             // dead animation
