@@ -1,16 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     [SerializeField] bool isGameOver = false;
     [SerializeField] public int TURN_DURATION_IN_SECONDS = 10;
-    private int remainingTime = 0;
+    [SerializeField] TextMeshProUGUI timer;
+    private float remainingTime = 0;
     // Start is called before the first frame update
     void Start()
     {
-        TURN_DURATION_IN_SECONDS = 5;
+        TURN_DURATION_IN_SECONDS = 10;
         remainingTime = TURN_DURATION_IN_SECONDS;
 
         RevivePlayers();
@@ -33,10 +36,8 @@ public class GameController : MonoBehaviour
                     yield return null;
 
                 playerController.StartTurn();
+                yield return TurnClock(playerController, player.name);
 
-                Debug.Log($"You have {TURN_DURATION_IN_SECONDS} seconds to play.");
-
-                yield return new WaitForSecondsRealtime(TURN_DURATION_IN_SECONDS);
                 playerController.EndTurn();
 
                 yield return null;
@@ -45,22 +46,35 @@ public class GameController : MonoBehaviour
 
     }
 
-    IEnumerator HandleTurn()
+    IEnumerator TurnClock(PlayerController playerController, string playerName)
     {
         remainingTime = TURN_DURATION_IN_SECONDS;
-        StartCoroutine(Countdown());
-        yield return new WaitForSecondsRealtime(TURN_DURATION_IN_SECONDS);
+        float clockResolution = 0.1f;
+
+        Debug.Log($"You have {remainingTime} seconds to play.");
+        UpdateTimer(remainingTime, playerName);
+
+        while (remainingTime >= 0)
+        {
+            if (!playerController.IsPlayerTurn())
+                yield break;
+
+            remainingTime -= clockResolution;
+
+            UpdateTimer(remainingTime, playerName);
+            Debug.Log($"Remeaning time: {remainingTime} seconds");
+
+            yield return new WaitForSecondsRealtime(clockResolution);
+        }
+
+        Debug.Log("Timeout!");
     }
 
-    private IEnumerator Countdown()
+    void UpdateTimer(float currentTime, string playerName)
     {
-        int duration = remainingTime;
-        float normalizedTime = 0;
-        while (normalizedTime <= 1f)
-        {
-            normalizedTime += Time.deltaTime / duration;
-            yield return null;
-        }
+        int secondsLeft = (int)currentTime;
+        //timer.text = string.Format("00", secondsLeft);
+        timer.SetText(string.Format("{0} - {1}", secondsLeft.ToString(), playerName));
     }
 
 

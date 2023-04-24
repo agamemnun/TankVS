@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject spawnLocation;
     [SerializeField] GameObject fireLocation;
     [SerializeField] bool isPlayerTurn = false;
+
     private bool chargingStarted = false;
     private bool isCharging = false;
 
@@ -50,6 +51,11 @@ public class PlayerController : MonoBehaviour
         isPlayerTurn = false;
     }
 
+    private void EndTurnByPlayer()
+    {
+        isPlayerTurn = false;
+    }
+
     public void RevivePlayer()
     {
         isAlive = true;
@@ -58,6 +64,11 @@ public class PlayerController : MonoBehaviour
     public bool IsAlive()
     {
         return isAlive;
+    }
+
+    public bool IsPlayerTurn()
+    {
+        return isPlayerTurn;
     }
 
     private LineRenderer lr;
@@ -157,6 +168,7 @@ public class PlayerController : MonoBehaviour
         firePower = 0;
 
         HideFirePowerIndicator();
+        EndTurnByPlayer();
     }
 
     void CancelFire()
