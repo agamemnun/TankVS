@@ -14,6 +14,7 @@ namespace DTerrain
         public int destructionRadius;
 
         protected Shape destroyCircle;
+
         private BasicPaintableLayer primaryLayer;
         private BasicPaintableLayer secondaryLayer;
 
@@ -31,7 +32,8 @@ namespace DTerrain
             }
 
             explosionRadius = baseExplosionRadius;
-            destructionRadius = explosionRadius * 5;
+            destructionRadius = explosionRadius * 8;
+
             destroyCircle = Shape.GenerateShapeCircle(destructionRadius);
         }
 
@@ -43,7 +45,7 @@ namespace DTerrain
         private void OnTriggerEnter2D(Collider2D other)
         {
 
-            // Direkt çarpışmada damage veren kod
+            // Yedek - Direkt çarpışmada damage veren kod
             /* if (other.tag == "Player")
             {
                 var healthComponent = other.GetComponent<Health>();
@@ -71,7 +73,6 @@ namespace DTerrain
 
         protected virtual void DestroyTerrain(Vector3 position, int r)
         {
-            //position.z = -10;
             Debug.Log($"projectile position on contact: {position}");
             Vector3 p = position - primaryLayer.transform.position;
 
