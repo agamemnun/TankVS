@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - CollidableLogicLayer
   - VisibleLayer
+  - Destructor
   layers:
   - Default
   - TransparentFX

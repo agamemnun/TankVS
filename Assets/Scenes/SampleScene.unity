@@ -1510,6 +1510,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 3.51
       objectReference: {fileID: 0}
+    - target: {fileID: 351116813421712420, guid: 4a854fb94d30d92439943eb83ef56c03, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 351116813421712424, guid: 4a854fb94d30d92439943eb83ef56c03, type: 3}
       propertyPath: m_Name
       value: Player 1
@@ -1517,6 +1521,14 @@ PrefabInstance:
     - target: {fileID: 351116813421712424, guid: 4a854fb94d30d92439943eb83ef56c03, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 351116813421712425, guid: 4a854fb94d30d92439943eb83ef56c03, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 351116813421712425, guid: 4a854fb94d30d92439943eb83ef56c03, type: 3}
+      propertyPath: m_FlipY
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 351116813431363249, guid: 4a854fb94d30d92439943eb83ef56c03, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1760,7 +1772,7 @@ GameObject:
   - component: {fileID: 1493366700}
   m_Layer: 0
   m_Name: Destructor
-  m_TagString: Untagged
+  m_TagString: Destructor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2534,6 +2546,10 @@ PrefabInstance:
     - target: {fileID: 351116813421712419, guid: 4a854fb94d30d92439943eb83ef56c03, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -6.588
+      objectReference: {fileID: 0}
+    - target: {fileID: 351116813421712420, guid: 4a854fb94d30d92439943eb83ef56c03, type: 3}
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 351116813421712424, guid: 4a854fb94d30d92439943eb83ef56c03, type: 3}
       propertyPath: m_Name

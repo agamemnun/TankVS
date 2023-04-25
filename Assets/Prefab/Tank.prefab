@@ -360,12 +360,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turretRotationSpeed: 30
+  turretRotationUpAngleLimit: -100
+  turretRotationDownAngleLimit: -10
   bulletVelocity: 300
   firePower: 0
   turret: {fileID: 351116812977877433}
   bullet: {fileID: 2780567275924284289, guid: 171dc268b6379cb44b7663d8663b7c5d, type: 3}
   spawnLocation: {fileID: 351116814696714178}
   fireLocation: {fileID: 351116814400548554}
+  isPlayerTurn: 0
   powerIndicatorAC:
     serializedVersion: 2
     m_Curve:
@@ -410,7 +413,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &351116813421712421
 BoxCollider2D:
   m_ObjectHideFlags: 0
