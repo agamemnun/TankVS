@@ -7,6 +7,9 @@ TagManager:
   - Target
   - Bullet
   - Ground
+  - CollidableLogicLayer
+  - VisibleLayer
+  - Destructor
   layers:
   - Default
   - TransparentFX

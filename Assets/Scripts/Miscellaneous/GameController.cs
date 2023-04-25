@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     [SerializeField] public int TURN_DURATION_IN_SECONDS = 10;
     [SerializeField] TextMeshProUGUI timer;
     private float remainingTime = 0;
-    // Start is called before the first frame update
+
     void Start()
     {
         TURN_DURATION_IN_SECONDS = 10;
@@ -51,7 +51,6 @@ public class GameController : MonoBehaviour
         remainingTime = TURN_DURATION_IN_SECONDS;
         float clockResolution = 0.1f;
 
-        Debug.Log($"You have {remainingTime} seconds to play.");
         UpdateTimer(remainingTime, playerName);
 
         while (remainingTime >= 0)
@@ -62,7 +61,6 @@ public class GameController : MonoBehaviour
             remainingTime -= clockResolution;
 
             UpdateTimer(remainingTime, playerName);
-            Debug.Log($"Remeaning time: {remainingTime} seconds");
 
             yield return new WaitForSecondsRealtime(clockResolution);
         }
@@ -97,9 +95,4 @@ public class GameController : MonoBehaviour
         remainingTime = 0;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

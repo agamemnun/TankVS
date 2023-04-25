@@ -32,7 +32,6 @@ public class PlayerController : MonoBehaviour
 
     public void StartTurn()
     {
-        Debug.Log($"{gameObject.name}'s turn started");
         isPlayerTurn = true;
     }
 
@@ -47,7 +46,6 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        Debug.Log($"{gameObject.name}'s turn ended");
         isPlayerTurn = false;
     }
 
@@ -114,11 +112,11 @@ public class PlayerController : MonoBehaviour
 
         if (!isCharging)
         {
-            if (Input.GetKey(KeyCode.UpArrow))
+            if (Input.GetKey(KeyCode.W))
             {
                 RotateTurret(1);
             }
-            else if (Input.GetKey(KeyCode.DownArrow))
+            else if (Input.GetKey(KeyCode.S))
             {
                 RotateTurret(-1);
             }
